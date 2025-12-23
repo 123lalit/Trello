@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { MoreHorizontal, UserPlus, Edit2 } from 'react-feather'
 import CardAdd from './CardAdd';
+import { BoardContext } from '../context/BoardContext';
 
 export default function Main() {
+
+  const {allboard,setAllBoard}=useContext(BoardContext);
+  const bdata=allboard.boards[allboard.active];
+
+      const cardData=(e)=>{
+        let newList=[...bdata.list];
+    }
+
   return (
-    <div className='flex flex-col bg-slate-900 w-full'>
+    <div className='flex flex-col bg-slate-900 w-100'>
 
         <div className="p-3 bg-black flex justify-between w-full bg-opacity-50">
-            <h2 className='text-lg'>My Trello Board</h2>
+            <h2 className='text-lg'>{bdata.name}</h2>
         
             <div className='flex items-center justify-center'>
                 <button className='bg-gray-200 h-8 text-gray-500 px-2 py-1 mr-2 rounded-flex justify-center items-center'>
@@ -20,30 +29,34 @@ export default function Main() {
         
           <div className='absolute mb-1 pb-2 left-0 right-0 top-0 bottom-0 p-3 flex overflow-x-scroll overflow-y-hidden'>
     
-              <div className="mr-3 w-60 h-fit rounded-md p-2 bg-black flex-shrink-0 ">
+          {bdata.list && bdata.list.map((x,ind)=>{
+          
+           return <div className="mr-3 w-60 h-fit rounded-md p-2 bg-black flex-shrink-0 ">
                 <div className="list-body">
                   <div className='flex justify-between p-1'>
-                    <span>To Do</span>
+                    <span>{x.title}</span>
                     <button className='hover:bg-gray-500 p-1 rounded-sm'><MoreHorizontal size={16}></MoreHorizontal></button>
                   </div>
-                  <div className='item flex justify-between items-center bg-zinc-700 p-1 cursor-pointer rounded-md border-2 border-zinc-900 hover:border-gray-500'>
-                      <span>Project Description</span>
+
+
+                  
+          {x.items && x.items.map((item,index)=>{
+
+              return    <div className='item flex justify-between items-center bg-zinc-700 p-1 cursor-pointer rounded-md border-2 border-zinc-900 hover:border-gray-500'>
+                      <span>{item.title}</span>
                       <span className='flex justify-start items-start'>
                         <button><Edit2 size={16}></Edit2></button>
                       </span>
                   </div>
-                  <CardAdd></CardAdd>
+
+          })}
+
+                  <CardAdd getCard={(e)=>cardData(e)}></CardAdd>
                 </div>
               </div>
 
-              <div className="mr-3 w-60 h-fit rounded-md p-2 bg-black flex-shrink-0">
-                <div className="list-body">
-                  <div className='flex justify-between p-1'>
-                    <span>To Do</span>
-                    <button className='hover:bg-gray-500 p-1 rounded-sm'><MoreHorizontal size={16}></MoreHorizontal></button>
-                  </div>
-                </div>
-              </div>
+          })
+          } 
 
               <div className="mr-3 w-60 h-fit rounded-md p-2 bg-black flex-shrink-0">
                 <div className="list-body">
@@ -58,5 +71,7 @@ export default function Main() {
 
         </div>
     </div>
-  )
+  );
 }
+
+
