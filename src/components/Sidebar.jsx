@@ -22,13 +22,24 @@ function Sidebar() {
         setAllBoard(newBoard);
     }
 
-    const addBoard = () =>{
-        let newB={...allboard};
-        newB.boards.push(boardData);
-        setAllBoard(newB);
+    //const addBoard = () =>{
+    //    let newB={...allboard};
+    //    newB.boards.push(boardData);
+    //    setAllBoard(newB);
+    //    setBoarddata(blankBoard);
+    //    setShowpop(!showpop);
+    //}
+
+    const addBoard = () => {
+        setAllBoard({
+            ...allboard,
+            boards: [...allboard.boards, boardData]
+        });
+
         setBoarddata(blankBoard);
-        setShowpop(!showpop);
-    }
+        setShowpop(false);
+    };
+
 
   return (
     <div className={`bg-[#1d2125] h-[calc(100vh-3rem)] border-r border-r-[#9fadbc29] transition-all linear duration-500 flex-shrink-0 ${collapsed?'w-[40px]':'w-[280px]'}`}>
@@ -87,8 +98,8 @@ function Sidebar() {
             </div>
 
             <ul>
-                {allboard.boards && allboard.boards.map((x)=>{
-                   return <li>
+                {allboard.boards && allboard.boards.map((x,i)=>{
+                   return <li key={i}>
                         <button onClick={()=>setActiveboard(i)} className='px-3 py-2 w-full text-sm flex justify-start align-baseline hover:'>
                             <span className='w-6 h-max rounded-sm mr-2' style={{backgroundColor:`${x.bgcolor}`}}>&nbsp;</span>
                             <span>{x.name}</span>   
